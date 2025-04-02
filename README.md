@@ -100,5 +100,5 @@ Want to contribute? Follow these steps:
 ## 📞 Contact
 For any queries, reach out to:
 - **Email**: jenilrathod478@gmail.com
-- **GitHub**: [[Your GitHub Profile](https://github.com/your-profile)](https://github.com/Jenil7828)
+- **GitHub**: [[Jenil7828](https://github.com/your-profile)](https://github.com/Jenil7828)
 
