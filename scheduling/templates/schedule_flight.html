@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Flight (AI-powered)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function getAIRecommendations() {
+            let departureCity = document.getElementById("departure_city").value.trim();
+            let arrivalCity = document.getElementById("arrival_city").value.trim();
+
+            if (!departureCity || !arrivalCity) {
+                alert("⚠️ Please enter both Departure and Arrival cities.");
+                return;
+            }
+
+            fetch(`/api/ai-flight-recommendations/?departure_city=${departureCity}&arrival_city=${arrivalCity}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert("❌ " + data.error);
+                        return;
+                    }
+
+                    document.getElementById("departure_time").value = data.best_departure_time;
+                    document.getElementById("arrival_time").value = data.best_arrival_time;
+                    document.getElementById("price").value = data.suggested_price;
+                    document.getElementById("available_seats").value = data.available_seats;
+                    document.getElementById("cargo_capacity").value = data.cargo_capacity;
+                })
+                .catch(error => {
+                    alert("❌ Failed to get AI recommendations. Please try again.");
+                    console.error(error);
+                });
+        }
+    </script>
+    <script>
+    function getAIRecommendations() {
+        let departureCity = document.getElementById("departure_city").value.trim();
+        let arrivalCity = document.getElementById("arrival_city").value.trim();
+
+        if (!departureCity || !arrivalCity) {
+            alert("⚠️ Please enter both Departure and Arrival cities.");
+            return;
+        }
+
+        fetch(`/api/ai-flight-recommendations/?departure_city=${departureCity}&arrival_city=${arrivalCity}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("❌ " + data.error);
+                    return;
+                }
+
+                document.getElementById("departure_time").value = data.best_departure_time;
+                document.getElementById("arrival_time").value = data.best_arrival_time;
+                document.getElementById("optimized_cost").value = data.optimized_cost;
+                document.getElementById("available_seats").value = data.available_seats;
+                document.getElementById("cargo_capacity").value = data.cargo_capacity;
+            })
+            .catch(error => {
+                alert("❌ Failed to get AI recommendations. Please try again.");
+                console.error(error);
+            });
+    }
+</script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">✈️ Airline Expert System (AI-powered)</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">🏠 Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/flights">🛫 Flights</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/cargo">📦 Cargo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/add-cargo">➕ Add Cargo</a></li> <!-- New Navigation Link -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">📅 Schedule a Flight</h1>
+
+        <div class="d-flex justify-content-center mb-3">
+            <button class="btn btn-info btn-lg" onclick="getAIRecommendations()">🤖 Get AI Recommendations</button>
+        </div>
+
+        <form method="post" class="shadow-lg p-4 bg-light rounded">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">✈️ Flight Number</label>
+                <input type="text" name="flight_number" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">📍 Departure City</label>
+                    <input type="text" id="departure_city" name="departure_city" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">📍 Arrival City</label>
+                    <input type="text" id="arrival_city" name="arrival_city" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">🕒 Departure Time</label>
+                    <input type="datetime-local" id="departure_time" name="departure_time" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">🕒 Arrival Time</label>
+                    <input type="datetime-local" id="arrival_time" name="arrival_time" class="form-control" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">💰 Price</label>
+                    <input type="number" id="price" name="price" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">🪑 Available Seats</label>
+                    <input type="number" id="available_seats" name="available_seats" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">📦 Cargo Capacity (tons)</label>
+                    <input type="number" step="0.1" id="cargo_capacity" name="cargo_capacity" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">⚡ Cargo Priority</label>
+                    <select id="priority" name="priority" class="form-control">
+                        <option value="High">High 🚀</option>
+                        <option value="Medium">Medium ✈️</option>
+                        <option value="Low">Low ⏳</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">💰 Optimized Cost (INR)</label>
+                    <input type="text" id="optimized_cost" name="optimized_cost" class="form-control" readonly>
+                </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100">✅ Schedule Flight</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>&copy; 2025 Airline Expert System | Powered by AI</p>
+    </footer>
+
+</body>
+</html>
