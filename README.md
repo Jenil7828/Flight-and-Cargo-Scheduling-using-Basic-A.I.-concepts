@@ -101,3 +101,5 @@ Want to contribute? Follow these steps:
 For any queries, reach out to:
 - **Email**: jenilrathod478@gmail.com
 - **GitHub**: [Jenil Rathod](https://github.com/Jenil7828)
+- **LinkedIn**: https://x.com/JenilRathod7828
+- 
